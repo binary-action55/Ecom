@@ -1,0 +1,42 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+#open {
+    background-color: rebeccapurple;
+}
+
+#btn:hover {
+    background-color: salmon;
+}
+
+#container {
+    background-color: rgb(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+
+#container.active {
+    display: flex;
+}
+
+#popup {
+    background-color: white;
+    width: 500px;
+    position: relative;
+}
+
+#close {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
