@@ -1,0 +1,27 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+button {
+    background-color: rebeccapurple;
+}
+
+#btn:hover {
+    background-color: salmon;
+}
+
+.toast {
+    padding: 2rem;
+    color: white;
+    background-color: rebeccapurple;
+    margin: 10px;
+}
+
+#container {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+}
