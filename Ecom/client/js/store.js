@@ -3,6 +3,7 @@ const cartBtn = document.querySelector('.cartButton');
 const closeCart = document.querySelector('.closeCart');
 const productContent = document.querySelector('.productContent');
 const cartItemList = document.querySelector('.cartItemList');
+const toastContainer = document.querySelector('.toastContainer');
 
 cartBtn.addEventListener('click',()=>{
     cartModal.classList.remove('hide');
@@ -32,5 +33,11 @@ productContent.addEventListener('click',(e)=>{
     </span>
     `;
     cartItemList.appendChild(cartItem);
+
+    const toast = document.createElement('div');
+    toast.setAttribute('class','toast');
+    toast.innerText = `Your product: ${product.name} is added to cart `;
+    toastContainer.appendChild(toast);
+    setTimeout(()=>toast.remove(),4000);
 })
 
