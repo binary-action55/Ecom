@@ -24,16 +24,28 @@
         <section class="cartModal hide">
             <button class="closeCart">&times;</button>
             <h3 class="cartHeading">CART</h1>
-                <div class="cartRow">
-                    <span class="cartColumn">Product</span>
-                    <span class="cartColumn">Price</span>
-                    <span class="cartColumn">Quantity</span>
-                </div>
-                <div class="cartRow">
-
+                <div class="cartItemList">
+                    <div class="cartHeading cartRow">
+                        <span class="cartColumn">Product</span>
+                        <span class="cartColumn">Price</span>
+                        <span class="cartColumn">Quantity</span>
+                    </div>
+                    <div class="cartRow">
+                        <span class="cartColumn">
+                            <img class="cartItemImage"
+                                src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80" />
+                            <span class="cartItemName">Item Name</span>
+                        </span>
+                        <span class="cartColumn">
+                            <span class="cartItemPrice">11.44$</span>
+                        </span>
+                        <span class="cartColumn">
+                            <span class="cartItemQty">2</span>
+                        </span>
+                    </div>
                 </div>
                 <div class="CartTotal">
-
+                    <span class="cartTotal">Total:</span>
                 </div>
                 <button class="purchase">Purchase</button>
         </section>
@@ -44,28 +56,36 @@
             <article class="productContent">
                 <h1 class="productListHeading">Burgers</h1>
                 <div class="productList">
-                    <article class="productDisplay">
+                    <article class="productDisplay" data-name="Burger 1"
+                        data-imgUrl="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80"
+                        data-price=12.99>
+                        <h3 class="productName">Burger 1</h3>
+                        <img class="productImage"
+                            src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80" />
+                        <span class="productPrice" class="price">12.99 $</span>
+                        <button class="productPurchase" class="abtn">Add to cart</button>
+                    </article>
+                    <article class="productDisplay" data-name="Burger 1"
+                        data-imgUrl="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80"
+                        data-price=12.99>
                         <h3 class="productName">Burger 1</h3>
                         <img class="productImage"
                             src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80" />
                         <span class="productPrice" class="price">12.99$</span>
                         <button class="productPurchase" class="abtn">Add to cart</button>
                     </article>
-                    <article class="productDisplay">
+                    <article class="productDisplay" data-name="Burger 1"
+                        data-imgUrl="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80"
+                        data-price=12.99>
                         <h3 class="productName">Burger 1</h3>
                         <img class="productImage"
                             src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80" />
                         <span class="productPrice" class="price">12.99$</span>
                         <button class="productPurchase" class="abtn">Add to cart</button>
                     </article>
-                    <article class="productDisplay">
-                        <h3 class="productName">Burger 1</h3>
-                        <img class="productImage"
-                            src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80" />
-                        <span class="productPrice" class="price">12.99$</span>
-                        <button class="productPurchase" class="abtn">Add to cart</button>
-                    </article>
-                    <article class="productDisplay">
+                    <article class="productDisplay" data-name="Burger 1"
+                        data-imgUrl="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80"
+                        data-price=12.99>
                         <h3 class="productName">Burger 1</h3>
                         <img class="productImage"
                             src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80" />
@@ -73,18 +93,20 @@
                         <button class="productPurchase" class="abtn">Add to cart</button>
                     </article>
                 </div>
-            </article>
-            <article class="productContent">
                 <h1 class="productListHeading">Drinks</h1>
                 <div class="productList">
-                    <article class="productDisplay">
+                    <article class="productDisplay" data-name="Burger 1"
+                        data-imgUrl="https://images.unsplash.com/photo-1554866585-cd94860890b7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80"
+                        data-price=12.99>
                         <h3 class="productName">Burger 1</h3>
                         <img class="productImage"
                             src="https://images.unsplash.com/photo-1554866585-cd94860890b7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80" />
                         <span class="productPrice" class="price">1.99$</span>
                         <button class="productPurchase" class="abtn">Add to cart</button>
                     </article>
-                    <article class="productDisplay">
+                    <article class="productDisplay" data-name="Burger 1"
+                        data-imgUrl="https://images.unsplash.com/photo-1554866585-cd94860890b7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80"
+                        data-price=12.99>
                         <h3 class="productName">Burger 1</h3>
                         <img class="productImage"
                             src="https://images.unsplash.com/photo-1554866585-cd94860890b7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80" />
@@ -93,7 +115,7 @@
                     </article>
                 </div>
             </article>
-            <button class="abtn">View Cart</button>
+            <button class="btn">View Cart</button>
         </article>
     </main>
     <footer class="pageFooter">

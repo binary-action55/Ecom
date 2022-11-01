@@ -73,13 +73,12 @@
 
 .cartModal {
     display: flex;
-    align-items: center;
     flex-direction: column;
     position: fixed;
     right: 2%;
     background-color: white;
     height: 100vh;
-    width: 20%;
+    width: 30%;
 }
 
 .cartModal.hide {
@@ -92,4 +91,35 @@
     background-color: white;
     border: none;
     font-size: 2rem;
+}
+
+.cartHeading {
+    text-align: center;
+}
+
+.cartRow {
+    display: flex;
+    margin-bottom: 4%;
+}
+
+.cartTotal {
+    float: right;
+    margin: 4%;
+}
+
+.purchase {
+    width: 50%;
+    margin-left: 25%;
+}
+
+.cartColumn {
+    border-bottom: 1px solid black;
+    width: 33%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 2%;
+}
+
+.cartItemImage {
+    width: 50%;
 }
