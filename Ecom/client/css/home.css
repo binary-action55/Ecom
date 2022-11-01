@@ -1,0 +1,52 @@
+.mainDisplay {
+    background-color: rgba(225, 208, 15, 0.786);
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: green;
+    font-size: 2rem;
+}
+
+.btn {
+    background-color: rgba(225, 208, 15, 0.786);
+    font-size: 1.5rem;
+    color: green;
+    margin: 1rem;
+    border: 1px solid green;
+}
+
+.cbtn {
+    background-color: rgba(225, 208, 15, 0.786);
+    border-radius: 50%;
+    font-size: 1.5rem;
+    margin: 1rem;
+    color: green;
+    border: 1px solid green;
+}
+
+.mainContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+
+}
+
+.mainListHeading {
+    font-family: inherit;
+}
+
+.mainList {
+    width: 70%;
+}
+
+.mainListItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style-type: none;
+    border-bottom: 1px black solid;
+}

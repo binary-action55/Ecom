@@ -1,0 +1,95 @@
+.mainDisplay {
+    background-color: rgba(225, 208, 15, 0.786);
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: green;
+    font-size: 2rem;
+}
+
+.mainContent {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.productContent {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.productList {
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-flow: row wrap;
+}
+
+.productImage {
+    grid-row: 2/4;
+    grid-column: 1/4;
+    width: 100%;
+}
+
+.productName {
+    text-align: center;
+    grid-row: 1;
+    grid-column: 2/3;
+}
+
+.productPrice {
+    grid-row: 4;
+    grid-column: 1;
+}
+
+.productPurchase {
+    grid-row: 4;
+    grid-column: 3/4;
+}
+
+.productDisplay {
+    width: 45%;
+    height: 50%;
+    display: grid;
+    grid-template-columns: 25%, 25%, 25%, 25%;
+    grid-template-rows: 25%, 25%, 25%, 25%;
+}
+
+.abtn {
+    margin: 1rem;
+}
+
+.cartButton {
+    position: absolute;
+    right: 2%;
+}
+
+.cartModal {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: fixed;
+    right: 2%;
+    background-color: white;
+    height: 100vh;
+    width: 20%;
+}
+
+.cartModal.hide {
+    display: none;
+}
+
+.closeCart {
+    position: absolute;
+    right: 0;
+    background-color: white;
+    border: none;
+    font-size: 2rem;
+}
