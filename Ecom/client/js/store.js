@@ -5,18 +5,21 @@ const productContent = document.querySelector('.productContent');
 const cartItemList = document.querySelector('.cartItemList');
 const toastContainer = document.querySelector('.toastContainer');
 
-cartBtn.addEventListener('click',()=>{
+cartBtn.addEventListener('click',(e)=>{
+    e.stopPropagation();
     cartModal.classList.remove('hide');
 });
 
-closeCart.addEventListener('click',()=>{
+closeCart.addEventListener('click',(e)=>{
+    e.stopPropagation();
     cartModal.classList.add('hide');
 })
 
 productContent.addEventListener('click',(e)=>{
+    if(!(e.target.classList.contains("productPurchase")))
+        return;    
     const parent = e.target.parentElement;
     const product = parent.dataset;
-    console.log(product);
     const cartItem = document.createElement('div');
     cartItem.classList.add('cartRow');
     cartItem.innerHTML = `

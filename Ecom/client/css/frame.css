@@ -5,14 +5,14 @@ body {
     box-sizing: border-box;
     margin: 0;
     overflow: auto;
-    position: relative;
 }
 
 .pageHeader {
-    position: sticky;
     top: 0;
     height: 5%;
+    width: 100%;
     font-family: sans-serif;
+    position: static;
 }
 
 .headerNavigation {
