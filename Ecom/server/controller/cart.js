@@ -7,6 +7,16 @@ const Sequelize = require('sequelize');
 
 module.exports.addToCart = async (req,res,next) => {
     try{
+        if(req.body.id == null)
+            throw new Error('id is undefined or null');
+        if(req.body.quantity == null)
+            throw new Error('quantity is undefined or null');
+    }
+    catch(err){
+        console.log(err);
+        res.status(400).json({message:err});
+    }
+    try{
         const cartItem = await Cart.findByPk(req.body.id);
         const product = await Product.findByPk(req.body.id);
         if(cartItem===null){
@@ -15,12 +25,11 @@ module.exports.addToCart = async (req,res,next) => {
                 quantity: 1,
                 subTotal: +product.price,
             });
-            res.json({messsage:"item added"});
+            res.status(201).json({success:true,messsage:"item added"});
         }
         else{
             const updatedQuantity = cartItem.quantity+(+req.body.quantity);
             const updatedTotal = cartItem.subTotal+(+req.body.quantity*(product.price));
-            console.log(updatedQuantity,updatedTotal);
             await Cart.update({
                 quantity: updatedQuantity,
                 subTotal: updatedTotal,
@@ -29,12 +38,12 @@ module.exports.addToCart = async (req,res,next) => {
                     id : cartItem.id,
                 }
             });
-            res.json({messsage:"item added"});
+            res.status(201).json({success:true,messsage:"item added"});
         }
     }
     catch(err){
-       console.log("err",err);
-       res.status(500).json({messsage:"error"}); 
+       console.log(err);
+       res.status(500).json({messsage:err}); 
     }
 }
 
@@ -43,7 +52,7 @@ module.exports.getCartItems = async (req,res,next) =>{
         const cartItems = await Cart.findAll();
         if(cartItems.length===0)
         {
-            res.json({cartItemList:[],cartTotal:0});
+            res.status(200).json({cartItemList:[],cartTotal:0});
         }
         else{
             const cartItemList = [];
@@ -63,11 +72,12 @@ module.exports.getCartItems = async (req,res,next) =>{
                 ]
             })
             cartTotal = (Math.round(total[0].dataValues.cartTotal*100))/100;
-            res.json({cartItemList:cartItemList,cartTotal});
+            res.status(200).json({cartItemList:cartItemList,cartTotal});
         }
     }
     catch(err){
-        console.log("err",err);
+        console.log(err);
+        res.json(500).json({message:err});
     }
 }
 
