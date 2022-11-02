@@ -12,7 +12,6 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json({extension:false}));
-app.use(bodyParser.urlencoded({extended:false}));
 
 app.use('/product',productRoutes);
 app.use('/',errorRoutes);
