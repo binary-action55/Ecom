@@ -1,0 +1,30 @@
+.mainDisplay {
+    background-color: rgba(225, 208, 15, 0.786);
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: green;
+    font-size: 2rem;
+}
+
+.mainContent {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.orderDisplay {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid red,
+}
+
+.pageFooter {
+    position: absolute;
+    bottom: 0;
+}
