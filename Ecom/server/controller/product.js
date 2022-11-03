@@ -1,6 +1,5 @@
 const path = require('path');
 const rootDirectory = require('../utils/rootDirectory');
-const Product = require(path.join(rootDirectory,'model','product'));
 const Sequelize = require('sequelize');
 
 const PRODUCTS_PER_PAGE = 2;
@@ -8,10 +7,9 @@ const PRODUCTS_PER_PAGE = 2;
 module.exports.getAllProducts = async (req,res,next)=>{
     const currentPage = +req.query.page || 1;
     const category = req.query.category || 'food';
-    console.log("currpage:",currentPage);
     try{
-        const productCount = await Product.count({where:{category}});
-        const products = await Product.findAll({where:{category},offset: (PRODUCTS_PER_PAGE*(currentPage-1)),limit: PRODUCTS_PER_PAGE});
+        const productCount = await req.user.countProducts({where:{category}});
+        const products = await req.user.getProducts({where:{category},offset: (PRODUCTS_PER_PAGE*(currentPage-1)),limit: PRODUCTS_PER_PAGE});
         res.status(200).json({
             products,
             currentPage,
@@ -41,7 +39,7 @@ module.exports.addProduct = (req,res,next)=>{
         return res.status(400).json({message:err});
     }
     
-    Product.create({
+    req.user.createProduct({
         name: req.body.name,
         price: +req.body.price,
         imageURL: req.body.imageURL,

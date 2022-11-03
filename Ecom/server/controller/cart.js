@@ -4,6 +4,7 @@ const rootDirectory = require('../utils/rootDirectory');
 const Cart = require(path.join(rootDirectory,'model','cart'));
 const Product = require(path.join(rootDirectory,'model','product'));
 const Sequelize = require('sequelize');
+const cart = require('../model/cart');
 
 
 const PRODUCTS_PER_PAGE = 2;
@@ -20,25 +21,25 @@ module.exports.addToCart = async (req,res,next) => {
         res.status(400).json({message:err});
     }
     try{
-        const cartItem = await Cart.findByPk(req.body.id);
-        const product = await Product.findByPk(req.body.id);
-        if(cartItem===null){
-            await Cart.create({
-                id:product.id,
-                quantity: 1,
-                subTotal: +product.price,
+        const Cart = await req.user.getCart();
+        const products = await Cart.getProducts({where:{id:+req.body.id}});
+        const [product,...meta] = await req.user.getProducts({where:{id:+req.body.id}});
+        if(products.length===0){
+            await Cart.addProduct(product,{
+                through:{
+                    quantity: 1,
+                    subTotal: +product.price,
+                }
             });
             res.status(201).json({success:true,messsage:"item added"});
         }
         else{
-            const updatedQuantity = cartItem.quantity+(+req.body.quantity);
-            const updatedTotal = cartItem.subTotal+(+req.body.quantity*(product.price));
-            await Cart.update({
-                quantity: updatedQuantity,
-                subTotal: updatedTotal,
-            },{
-                where:{
-                    id : cartItem.id,
+            const updatedQuantity = products[0].cartItem.quantity+(+req.body.quantity);
+            const updatedTotal = products[0].cartItem.subTotal+(+req.body.quantity*(products[0].price));
+            await Cart.addProduct(products[0],{
+                through:{
+                    quantity: updatedQuantity,
+                    subTotal: updatedTotal,
                 }
             });
             res.status(201).json({success:true,messsage:"item added"});
@@ -53,8 +54,9 @@ module.exports.addToCart = async (req,res,next) => {
 module.exports.getCartItems = async (req,res,next) =>{
     const currentPage = +req.query.page || 1;
     try{
-        const cartItems = await Cart.findAll({offset:(PRODUCTS_PER_PAGE*(currentPage-1)),limit:PRODUCTS_PER_PAGE});
-        if(cartItems.length===0)
+        const Cart = await req.user.getCart();
+        const cartProducts = await Cart.getProducts(({offset:(PRODUCTS_PER_PAGE*(currentPage-1)),limit:PRODUCTS_PER_PAGE}));
+        if(cartProducts.length===0)
         {
             res.status(200).json({
                 cartItemList:[],
@@ -66,23 +68,24 @@ module.exports.getCartItems = async (req,res,next) =>{
         }
         else{
             const cartItemList = [];
-            const cartTotalItems = await Cart.count();
-            for(let item of cartItems)
+            const cartTotalItems = await Cart.countProducts();
+            let total=0;
+            for(let product of cartProducts)
             {
-                const productItem = await Product.findByPk(item.id);
+                const subTotal = product.cartItem.quantity*product.price;
                 const cartListItem = {
-                    ...productItem.dataValues,
-                    quantity: item.quantity,
-                    subTotal: item.subTotal,
+                    ...product.dataValues,
+                    quantity: product.cartItem.quantity,
+                    subTotal,
                 };
                 cartItemList.push(cartListItem);
             }
-            const total = await Cart.findAll({
-                attributes:[
-                        [Sequelize.fn('SUM',Sequelize.col('subTotal')),'cartTotal']
-                ]
-            })
-            cartTotal = (Math.round(total[0].dataValues.cartTotal*100))/100;
+            const allProducts = await Cart.getProducts();
+            for(let product of allProducts)
+            {
+                total+=product.price*product.cartItem.quantity;
+            }   
+            cartTotal = (Math.round(total*100))/100;
             res.status(200).json({
                 cartItemList:cartItemList,
                 cartTotal,

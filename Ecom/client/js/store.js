@@ -100,6 +100,8 @@ function createProductList(products,category){
 }
 
 function createPageNavigation(data,category){
+    if(!(data.hasPreviousPage || data.hasNextPage))
+        return;
     let pageNavigator;
     if(category==='food')
         pageNavigator=pageNavigatorFood;
