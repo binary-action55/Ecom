@@ -1,16 +1,28 @@
 const path = require('path');
 const rootDirectory = require('../utils/rootDirectory');
 const Product = require(path.join(rootDirectory,'model','product'));
+const Sequelize = require('sequelize');
 
-module.exports.getAllProducts = (req,res,next)=>{
-    Product.findAll()
-    .then((products)=>{
-        res.status(200).json(products);
-    })
-    .catch(err=>{
+const PRODUCTS_PER_PAGE = 2;
+
+module.exports.getAllProducts = async (req,res,next)=>{
+    const currentPage = +req.query.page || 1;
+    const category = req.query.category || 'food';
+    console.log("currpage:",currentPage);
+    try{
+        const productCount = await Product.count({where:{category}});
+        const products = await Product.findAll({where:{category},offset: (PRODUCTS_PER_PAGE*(currentPage-1)),limit: PRODUCTS_PER_PAGE});
+        res.status(200).json({
+            products,
+            currentPage,
+            hasPreviousPage: currentPage>1,
+            hasNextPage: (PRODUCTS_PER_PAGE*currentPage) < productCount,
+        });
+    }
+    catch(err){
         console.log(err);
         res.status(500).json({message:err});
-    }); 
+    } 
 }
 
 module.exports.addProduct = (req,res,next)=>{
@@ -18,7 +30,7 @@ module.exports.addProduct = (req,res,next)=>{
         if(
            req.body.name==null ||
            req.body.price==null ||
-           req.boody.imageURL==null ||
+           req.body.imageURL==null ||
            req.body.category==null ||
            req.body.description==null
         )
@@ -26,7 +38,7 @@ module.exports.addProduct = (req,res,next)=>{
     }
     catch(err){
         console.log(err);
-        res.status(400).json({message:err});
+        return res.status(400).json({message:err});
     }
     
     Product.create({
@@ -38,6 +50,7 @@ module.exports.addProduct = (req,res,next)=>{
     })
     .then(product=>res.status(201).json(product))
     .catch(err=>{
+        console.log(req.body);
         console.log(err);
         res.status(500).json({message:err});
     });

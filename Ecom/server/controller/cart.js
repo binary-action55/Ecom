@@ -5,6 +5,9 @@ const Cart = require(path.join(rootDirectory,'model','cart'));
 const Product = require(path.join(rootDirectory,'model','product'));
 const Sequelize = require('sequelize');
 
+
+const PRODUCTS_PER_PAGE = 2;
+
 module.exports.addToCart = async (req,res,next) => {
     try{
         if(req.body.id == null)
@@ -48,14 +51,22 @@ module.exports.addToCart = async (req,res,next) => {
 }
 
 module.exports.getCartItems = async (req,res,next) =>{
+    const currentPage = +req.query.page || 1;
     try{
-        const cartItems = await Cart.findAll();
+        const cartItems = await Cart.findAll({offset:(PRODUCTS_PER_PAGE*(currentPage-1)),limit:PRODUCTS_PER_PAGE});
         if(cartItems.length===0)
         {
-            res.status(200).json({cartItemList:[],cartTotal:0});
+            res.status(200).json({
+                cartItemList:[],
+                cartTotal:0,
+                currentPage:1,
+                hasPreviousPage: false,
+                hasNextPage: false,
+            });
         }
         else{
             const cartItemList = [];
+            const cartTotalItems = await Cart.count();
             for(let item of cartItems)
             {
                 const productItem = await Product.findByPk(item.id);
@@ -72,7 +83,13 @@ module.exports.getCartItems = async (req,res,next) =>{
                 ]
             })
             cartTotal = (Math.round(total[0].dataValues.cartTotal*100))/100;
-            res.status(200).json({cartItemList:cartItemList,cartTotal});
+            res.status(200).json({
+                cartItemList:cartItemList,
+                cartTotal,
+                currentPage,
+                hasPreviousPage : currentPage > 1,
+                hasNextPage : (PRODUCTS_PER_PAGE*currentPage) < cartTotalItems, 
+            });
         }
     }
     catch(err){

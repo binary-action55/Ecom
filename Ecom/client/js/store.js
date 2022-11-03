@@ -7,6 +7,9 @@ const foodList = document.querySelector('#foodList');
 const drinkList  = document.querySelector('#drinkList');
 const cartItemListContents = document.querySelector('#cartItemListContents');
 const cartTotalContent = document.querySelector('#cartTotalContent');
+const pageNavigatorFood = document.querySelector('#pageNavigatorFood');
+const pageNavigatorDrinks = document.querySelector('#pageNavigatorDrinks');
+const pageNavigatorCart = document.querySelector('#pageNavigatorCart');
 
 function createCartItems(product){
     const cartItem = document.createElement('div');
@@ -29,14 +32,19 @@ function createCartItems(product){
 }
 
 
-cartBtn.addEventListener('click', async (e)=>{
-    const res = await axios.get('http://localhost:3000/product/cart');
+async function getCartPageList (currentPage) {
+    const res = await axios.get('http://localhost:3000/product/cart',{params:{page:currentPage}});
     cartItemListContents.innerHTML = "";
     for(let item of res.data.cartItemList){
         createCartItems(item);
     }
+    createPageNavigation(res.data,'cart');
     cartTotalContent.innerText = `Total:${res.data.cartTotal}`;
     cartModal.classList.remove('hide');
+}
+
+cartBtn.addEventListener('click', async (e)=>{
+    getCartPageList(1);
 });
 
 closeCart.addEventListener('click',(e)=>{
@@ -55,13 +63,20 @@ productContent.addEventListener('click',async (e)=>{
         toast.setAttribute('class','toast');
         toast.innerText = `Your product: ${product.name} is added to cart `;
         toastContainer.appendChild(toast);
-        console.log("toast",toast);
         setTimeout(()=>toast.remove(),4000);
     }
     catch(err){console.error(err);}
 });
 
-function createProductList(products){
+function createProductList(products,category){
+    let productList;
+    if(category==='food')
+        productList = foodList;
+    else
+        productList = drinkList;
+    
+    productList.innerHTML='';
+
     for(let product of products){
         const productListItem = document.createElement('article');
         productListItem.classList.add('productDisplay');
@@ -80,15 +95,69 @@ function createProductList(products){
         <button class="productPurchase" class="abtn">Add to cart</button>
         `;
 
-        if(product.category === 'food')
-            foodList.appendChild(productListItem);
-        else
-            drinkList.appendChild(productListItem);
+        productList.appendChild(productListItem);
     }
 }
 
-document.addEventListener('DOMContentLoaded', async ()=>{
-    const res = await axios.get('http://localhost:3000/product/');
-    createProductList(res.data);
+function createPageNavigation(data,category){
+    let pageNavigator;
+    if(category==='food')
+        pageNavigator=pageNavigatorFood;
+    else if(category==='drink')
+        pageNavigator=pageNavigatorDrinks;
+    else
+        pageNavigator=pageNavigatorCart;
+
+    pageNavigator.innerHTML = "";
+    if(data.hasPreviousPage)
+    {
+        const button = document.createElement('button');
+        button.setAttribute('class','pageNavigationButton');
+        button.setAttribute('data-page',data.currentPage-1);
+        button.innerText = data.currentPage-1;
+        pageNavigator.appendChild(button);
+    }
+
+    const button = document.createElement('button');
+    button.setAttribute('class','pageNavigationButton');
+    button.setAttribute('data-page',data.currentPage);
+    button.innerText = data.currentPage;
+    pageNavigator.appendChild(button);
+
+    if(data.hasNextPage)
+    {
+        const button = document.createElement('button');
+        button.setAttribute('class','pageNavigationButton');
+        button.setAttribute('data-page',data.currentPage+1);
+        button.innerText = data.currentPage+1;
+        pageNavigator.appendChild(button);
+    }
+}
+
+pageNavigatorFood.addEventListener('click',(e)=>{
+    if(e.target.classList.contains('pageNavigationButton'))
+        getProductListPage(+e.target.dataset.page,'food');
+});
+
+pageNavigatorDrinks.addEventListener('click',(e)=>{
+    if(e.target.classList.contains('pageNavigationButton'))
+        getProductListPage(+e.target.dataset.page,'drink');
+});
+
+pageNavigatorCart.addEventListener('click',(e)=>{
+    if(e.target.classList.contains('pageNavigationButton'))
+        getCartPageList(+e.target.dataset.page);
+});
+
+async function getProductListPage(currentPage,category){
+    const res = await axios.get('http://localhost:3000/product/',{params:{page:currentPage,category}});
+    createProductList(res.data.products,category);
+    createPageNavigation(res.data,category);
+}
+
+
+document.addEventListener('DOMContentLoaded', ()=>{
+    getProductListPage(1,"food");
+    getProductListPage(1,"drink");
 })
 
