@@ -1,15 +1,23 @@
 const cartModal = document.querySelector('.cartModal');
-const cartBtn = document.querySelector('.cartButton');
-const closeCart = document.querySelector('.closeCart');
 const productContent = document.querySelector('.productContent');
 const toastContainer = document.querySelector('.toastContainer');
+const cartTotalContent = document.querySelector('#cartTotalContent');
+
+// List divs
 const foodList = document.querySelector('#foodList');
 const drinkList  = document.querySelector('#drinkList');
 const cartItemListContents = document.querySelector('#cartItemListContents');
-const cartTotalContent = document.querySelector('#cartTotalContent');
+
+// Buttons
+const cartBtn = document.querySelector('.cartButton');
+const orderBtn = document.querySelector('.orderButton');
+const closeCart = document.querySelector('.closeCart');
+
+//Page Navigators
 const pageNavigatorFood = document.querySelector('#pageNavigatorFood');
 const pageNavigatorDrinks = document.querySelector('#pageNavigatorDrinks');
 const pageNavigatorCart = document.querySelector('#pageNavigatorCart');
+
 
 function createCartItems(product){
     const cartItem = document.createElement('div');
@@ -35,38 +43,17 @@ function createCartItems(product){
 async function getCartPageList (currentPage) {
     const res = await axios.get('http://localhost:3000/product/cart',{params:{page:currentPage}});
     cartItemListContents.innerHTML = "";
+    pageNavigatorCart.innerHTML="";
+    
     for(let item of res.data.cartItemList){
         createCartItems(item);
     }
+    if(res.data.cartItemList.length>0)
+        orderBtn.classList.remove('hide');
     createPageNavigation(res.data,'cart');
     cartTotalContent.innerText = `Total:${res.data.cartTotal}`;
     cartModal.classList.remove('hide');
 }
-
-cartBtn.addEventListener('click', async (e)=>{
-    getCartPageList(1);
-});
-
-closeCart.addEventListener('click',(e)=>{
-    cartModal.classList.add('hide');
-})
-
-productContent.addEventListener('click',async (e)=>{
-    if(!(e.target.classList.contains("productPurchase")))
-        return;    
-    const parent = e.target.parentElement;
-    const product = parent.dataset;
-    cartModal.classList.add('hide');
-    try{
-        await axios.post('http://localhost:3000/product/cart',{id:product.id,quantity:1});
-        const toast = document.createElement('div');
-        toast.setAttribute('class','toast');
-        toast.innerText = `Your product: ${product.name} is added to cart `;
-        toastContainer.appendChild(toast);
-        setTimeout(()=>toast.remove(),4000);
-    }
-    catch(err){console.error(err);}
-});
 
 function createProductList(products,category){
     let productList;
@@ -136,6 +123,60 @@ function createPageNavigation(data,category){
     }
 }
 
+async function getProductListPage(currentPage,category){
+    const res = await axios.get('http://localhost:3000/product/',{params:{page:currentPage,category}});
+    createProductList(res.data.products,category);
+    createPageNavigation(res.data,category);
+}
+
+function toastMessage(msg){
+    const toast = document.createElement('div');
+    toast.setAttribute('class','toast');
+    toast.innerText = msg;
+    toastContainer.appendChild(toast);
+    setTimeout(()=>toast.remove(),4000);
+}
+
+// Event Listeners
+
+cartBtn.addEventListener('click', async (e)=>{
+    getCartPageList(1);
+});
+
+closeCart.addEventListener('click',(e)=>{
+    cartModal.classList.add('hide');
+    orderBtn.classList.add('hide');
+});
+
+orderBtn.addEventListener('click', async (e)=>{
+    try{
+        const res = await axios.post('http://localhost:3000/product/order');
+        cartModal.classList.add('hide');
+        orderBtn.classList.add('hide');
+        const msg = `Order successfully placed with OrderId ${res.data.orderId}`;
+        toastMessage(msg);
+    }
+    catch(err){
+        console.log(err);
+        return;
+    }
+});
+
+productContent.addEventListener('click',async (e)=>{
+    if(!(e.target.classList.contains("productPurchase")))
+        return;    
+    const parent = e.target.parentElement;
+    const product = parent.dataset;
+    cartModal.classList.add('hide');
+    orderBtn.classList.add('hide');
+    try{
+        await axios.post('http://localhost:3000/product/cart',{id:product.id,quantity:1});
+        const msg = `Your product: ${product.name} is added to cart `
+        toastMessage(msg);
+    }
+    catch(err){console.error(err);}
+});
+
 pageNavigatorFood.addEventListener('click',(e)=>{
     if(e.target.classList.contains('pageNavigationButton'))
         getProductListPage(+e.target.dataset.page,'food');
@@ -151,15 +192,7 @@ pageNavigatorCart.addEventListener('click',(e)=>{
         getCartPageList(+e.target.dataset.page);
 });
 
-async function getProductListPage(currentPage,category){
-    const res = await axios.get('http://localhost:3000/product/',{params:{page:currentPage,category}});
-    createProductList(res.data.products,category);
-    createPageNavigation(res.data,category);
-}
-
-
 document.addEventListener('DOMContentLoaded', ()=>{
     getProductListPage(1,"food");
     getProductListPage(1,"drink");
 })
-

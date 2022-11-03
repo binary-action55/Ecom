@@ -1,12 +1,3 @@
-const e = require('express');
-const path = require('path');
-const rootDirectory = require('../utils/rootDirectory');
-const Cart = require(path.join(rootDirectory,'model','cart'));
-const Product = require(path.join(rootDirectory,'model','product'));
-const Sequelize = require('sequelize');
-const cart = require('../model/cart');
-
-
 const PRODUCTS_PER_PAGE = 2;
 
 module.exports.addToCart = async (req,res,next) => {

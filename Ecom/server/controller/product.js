@@ -1,7 +1,3 @@
-const path = require('path');
-const rootDirectory = require('../utils/rootDirectory');
-const Sequelize = require('sequelize');
-
 const PRODUCTS_PER_PAGE = 2;
 
 module.exports.getAllProducts = async (req,res,next)=>{
@@ -48,7 +44,6 @@ module.exports.addProduct = (req,res,next)=>{
     })
     .then(product=>res.status(201).json(product))
     .catch(err=>{
-        console.log(req.body);
         console.log(err);
         res.status(500).json({message:err});
     });
