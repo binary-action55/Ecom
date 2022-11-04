@@ -12,5 +12,6 @@ router.post('/',productController.addProduct);
 router.get('/cart',cartController.getCartItems);
 router.post('/cart',cartController.addToCart);
 router.get('/order',orderController.getOrders);
+router.post('/order',orderController.addOrder);
 
 module.exports = router;

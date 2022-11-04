@@ -11,7 +11,7 @@
 
 .mainContent {
     display: flex;
-    flex-flow: column;
+    flex-flow: row wrap;
     justify-content: center;
     align-items: center;
 }
@@ -21,7 +21,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 2px solid red,
+    border: solid red 1px;
+    margin: 2rem;
 }
 
 .pageFooter {

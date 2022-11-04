@@ -25,9 +25,9 @@ module.exports.getOrders = async (req,res,next) =>{
     try{
         const orders = await req.user.getOrders()
         const orderDetails = [];
-        let total = 0;
         for(let order of orders )
         {
+            let total = 0;
             const orderProducts = [];
             const products = await order.getProducts();
             for(let product of products)
