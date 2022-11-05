@@ -5,7 +5,6 @@ const cors = require('cors');
 const bodyParser = require('body-parser'); 
 const sequelize = require('./utils/database');
 
-
 //models
 const Cart = require(path.join(rootDirectory,'model','cart'));
 const Product = require(path.join(rootDirectory,'model','product'));
@@ -17,6 +16,8 @@ const OrderItem = require(path.join(rootDirectory,'model','orderItem'));
 //routes
 const errorRoutes = require(path.join(rootDirectory,'routes','error'));
 const productRoutes = require(path.join(rootDirectory,'routes','product'));
+
+
 
 const app = express();
 
